@@ -1,0 +1,19 @@
+.box {
+    position: relative;
+    width: 272px;
+}
+
+.count {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.center__text {
+ text-align: center;
+}
