@@ -3,7 +3,8 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../Price/Price';
 import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css';
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
+
+import Modal from "../Modal/Modal";
 import React from "react";
 import { useEffect } from "react";
 
@@ -37,7 +38,12 @@ const BurgerConstructor = (props) => {
 
     return(
         <>
-        <ModalOverlay modal={modal} state='' handleCloseModal={handleCloseModal} keyEsc={keyEsc}/>
+        <Modal            
+            handleCloseModal={handleCloseModal}            
+            modal={modal} 
+            state={props.data} 
+            modalType = {'null'}
+            keyEsc = {keyEsc} />     
         <div className="mt-25 ml-10">
             <ProductSmall data={props.data}/>
             <div className={ styles.price + " mt-10"}>

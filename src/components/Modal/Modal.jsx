@@ -3,6 +3,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import styles from './Modal.module.css';
 import PropTypes from 'prop-types';
+import ModalOverlay from "../ModalOverlay/ModalOverlay";
 
 const Modal = (props) => {    
     
@@ -28,9 +29,11 @@ const Modal = (props) => {
                 <OrderDetails />
                 }
             </div>
+            
         :        
             null
         }
+        <ModalOverlay modal={props.modal} state={props.state} keyEsc={props.keyEsc}/> 
        </> 
     ); 
 }

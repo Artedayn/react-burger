@@ -3,7 +3,7 @@ import Product from "../Product/Product";
 import styles from './BurgerIngredients.module.css';
 import { useMemo, useEffect } from "react";
 import React from "react";
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import Modal from "../Modal/Modal";
 
 const BurgerIngredients = (props) => {   
     const data = props.data;
@@ -41,9 +41,13 @@ const BurgerIngredients = (props) => {
     };
        
     return(
-        <div>                 
-            <ModalOverlay modal={modal} state={state} handleCloseModal={handleCloseModal} keyEsc={keyEsc}/>  
-             
+        <div>                    
+            <Modal            
+            handleCloseModal={handleCloseModal} 
+            modal={modal}
+            state={state} 
+            modalType = {props.data !== '' ? 'ingredients' : 'null' }
+            keyEsc = {keyEsc} /> 
             <div className="mb-5 mt-10">
                 <p className="text text_type_main-large">
                     Соберите бургер

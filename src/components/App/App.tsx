@@ -16,11 +16,14 @@ function App() {
       try {
         setState({...state, loading: true});
         const res = await fetch(`${url}`);
+        if (!res.ok) {
+          throw new Error('Ответ сети был не ok.');
+        }
         const data = await res.json();
         setState({ productData: data.data, loading: false });
       }
-      catch {
-        console.log('Ошибке')
+      catch (error) {
+        console.log('Возникла проблема с вашим fetch запросом: ', error)
       }        
     };
     getProductData();
