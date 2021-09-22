@@ -1,0 +1,13 @@
+.colomn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scroll {
+    overflow-y: auto;
+    height: 464px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

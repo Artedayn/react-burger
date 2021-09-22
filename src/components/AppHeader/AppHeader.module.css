@@ -1,0 +1,26 @@
+.header {
+    display: flex; 
+    justify-content: center; 
+    background: #1C1C21;
+}
+
+.menu {
+    display: flex;
+    margin-right: 112px;
+}
+
+.item {
+    display: flex; 
+    align-items: center;
+}
+
+.profile {
+    display: flex; 
+    align-items: center; 
+    margin-left: 289px;
+}
+
+.logo {
+    display: flex;
+}
+
