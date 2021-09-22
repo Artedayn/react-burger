@@ -1,17 +1,16 @@
-
-.item {
+.box {
     display: flex;
     justify-content: space-between;
     background: url(../../images/ingredient_b.png) no-repeat 100%;
 }
 
-.name {
+.item {
     display: flex;
     align-items: center;
     width: 254px;
 }
 
-.icon {
+.center {
     display: flex;
     align-items: center;
 }

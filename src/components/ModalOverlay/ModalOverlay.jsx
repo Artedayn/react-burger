@@ -1,23 +1,22 @@
-import { createPortal } from 'react-dom';
+
 import styles from './ModalOverlay.module.css';
 import PropTypes from 'prop-types';
 
 const ModalOverlay = (props) => {
-    const modalRoot = document.getElementById("react-modals");
-    return createPortal(
+    
+    return (
         <>
-            <div onKeyDown={props.keyEsc} className={styles.block} style={{ display: props.modal }}>           
+            <div className={styles.block} style={{ display: props.modal }} onClick={props.handleCloseModal}>           
             </div>
             
          </>
-        ,
-        modalRoot
+       
     )
 }
 
 ModalOverlay.propTypes = {
-    modal: PropTypes.string,
-    modalType: PropTypes.string,
+    modal: PropTypes.string.isRequired,
+    handleCloseModal: PropTypes.func.isRequired
 };
 
 export default ModalOverlay

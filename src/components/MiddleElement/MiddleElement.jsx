@@ -31,9 +31,9 @@ const MiddleElement = (props) => {
 }
 
 MiddleElement.propTypes = {
-    text: PropTypes.string,
-    thumbnail: PropTypes.string,
-    price: PropTypes.number,
+    text: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
 }; 
 
 export default MiddleElement

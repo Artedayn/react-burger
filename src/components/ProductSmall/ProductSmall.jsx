@@ -1,6 +1,7 @@
 import ConstructorElement from '../ConstructorElement/ConstructorElement';
 import styles from './ProductSmall.module.css';
 import { useMemo } from 'react';
+import { menuItemPropTypes } from '../../utils/constants';
 
 const ProductSmall = (props) => {
     const data = props.data;
@@ -38,4 +39,9 @@ const ProductSmall = (props) => {
       </div>
     )
 }
+
+ProductSmall.propTypes = {
+  state: menuItemPropTypes
+}; 
+
 export default ProductSmall;

@@ -1,36 +1,26 @@
 import TabElements from "../TabElements/TabElements";
 import Product from "../Product/Product";
 import styles from './BurgerIngredients.module.css';
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import React from "react";
 import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import PropTypes from 'prop-types';
+import { menuItemPropTypes } from '../../utils/constants';
 
 const BurgerIngredients = (props) => {   
     const data = props.data;
     const buns = useMemo(() => data.filter((item) => item.type === 'bun'), [data]);
     const mains = useMemo(() => data.filter((item) => item.type === 'main'), [data]);
-    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
+    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);    
 
     const [modal, openModal] = React.useState("none");
     const [state, setDataForModal] = React.useState("");    
 
-    useEffect(()=>{       
-        document.addEventListener("keydown", keyEsc);
-        return () => {
-            document.removeEventListener("keydown", keyEsc);
-        }
-    }, [])
-
-    const keyEsc = (e) => {        
-        if(e.key === "Escape") {
-            openModal(modal === "block" ? "block" : 'none');
-        }        
-    }
-
     const handleOpenModal = () => {
         openModal(modal === "none" ? "block" : "none");        
-    };
-
+    };   
+    
     const handleClickIngredients = (data) => {       
         setDataForModal(data);
         handleOpenModal();        
@@ -43,12 +33,14 @@ const BurgerIngredients = (props) => {
     return(
         <div>                    
             <Modal            
-            handleCloseModal={handleCloseModal} 
+            handleCloseModal={handleCloseModal}            
             modal={modal}
             state={state} 
-            modalType = {props.data !== '' ? 'ingredients' : 'null' }
-            keyEsc = {keyEsc} /> 
-            <div className="mb-5 mt-10">
+            data={data}
+            openModal={openModal}
+            detail={'Детали заказа'}
+           ><IngredientDetails state={state}/></Modal>
+            <div className="mb-5 mt-10" >
                 <p className="text text_type_main-large">
                     Соберите бургер
                 </p>
@@ -92,13 +84,8 @@ const BurgerIngredients = (props) => {
     )
 }
 
+BurgerIngredients.propTypes = {
+    data: PropTypes.arrayOf(menuItemPropTypes),
+};
+
 export default BurgerIngredients;
-
-// const handleClickIngredients = (data) => {
-//         setShowModal(true);
-//         setDataForModal(data);
-//     }
-
-//     <Modal header={"Детали ингредиента"} onClose={handleCloseModal}><IngredientDetails data={dataForModal}/></Modal>
-
-//     return <Ingredient key={item._id} data={item} onClick={() => handleClickIngredients(item)} onClose={handleCloseModal}/>

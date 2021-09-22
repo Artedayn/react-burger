@@ -3,10 +3,10 @@ import MiddleElement from '../MiddleElement/MiddleElement';
 import TopElement from '../TopElement/TopElement';
 import styles from './ConstructorElement.module.css';
 import PropTypes from 'prop-types';
+import { menuItemPropTypes } from '../../utils/constants';
 
 const ConstructorElement = (props) => {
     return(
-        
         <div className={styles.container}>
         { props.type === 'bun' && props.position === "top"
         ? 
@@ -23,7 +23,8 @@ const ConstructorElement = (props) => {
 
 ConstructorElement.propTypes = {
     type: PropTypes.string,
-    position: PropTypes.string
+    position: PropTypes.string,
+    props: menuItemPropTypes
 }; 
 
 export default ConstructorElement 

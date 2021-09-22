@@ -3,7 +3,7 @@ import styles from './OrderDetails.module.css';
 
 const OrderDetails = () => {
     return(
-        <div className={"pt-30 " + styles.center}>
+        <div className={styles.center}>
                     <p className={'text text_type_digits-large ' + styles.idintificate}>034536</p>
                     <p className="text text_type_main-medium mt-8">
                         идентификатор заказа

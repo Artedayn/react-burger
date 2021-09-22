@@ -2,7 +2,10 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import styles from './App.module.css';
+import { menuItemPropTypes } from '../../utils/constants';
+
 import { useEffect, useState } from 'react';
+
 
 function App() {
   const [state, setState] = useState({ 
@@ -39,5 +42,9 @@ function App() {
     </>
   );
 }
+
+App.propTypes = {
+  productData: menuItemPropTypes
+};
 
 export default App;
