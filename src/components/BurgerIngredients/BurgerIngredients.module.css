@@ -1,0 +1,10 @@
+.scroll {
+    overflow-y: auto;
+    height: 720px;
+}
+
+.box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 600px;
+}

@@ -1,0 +1,23 @@
+.block{
+    background: #1C1C21;
+    width: 720px;
+    display: block;
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    z-index: 100;
+    border-radius: 5%;
+}
+
+.close{
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    cursor: pointer;
+}
+
+.detail {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
