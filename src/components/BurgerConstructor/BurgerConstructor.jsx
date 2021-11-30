@@ -3,44 +3,104 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../Price/Price';
 import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css';
-import OrderDetails from "../OrderDetails/OrderDetails";
-import { menuItemPropTypes } from '../../utils/constants';
-
+import { openOrderModal, closeOrderModal } from "../../services/actions/orderDetails";
+import { useDrop } from 'react-dnd';
+import { ADD_TYPE, ADD_QTY, REMOVE_BUN } from "../../services/actions/actionTypes";
+import { useSelector, useDispatch } from 'react-redux';
 import Modal from "../Modal/Modal";
-import React from "react";
+import { useEffect, useState } from "react";
 
+const initialState = {}
 
-const BurgerConstructor = (props) => {
-    const [modal, openModal] = React.useState("none");
+const BurgerConstructor = () => {    
+    const dispatch = useDispatch(); 
 
-    const handleClickButton = () => { 
-        handleOpenModal();        
-    };
+    const onSubmit = () => {       
+        dispatch(openOrderModal())        
+    }  
 
-    const handleCloseModal = (e) => {
-        openModal(modal === "none" ? "block" : "none");       
-    };
+    const { data = initialState } = useSelector(store => ({
+        data: store.draggableIngridientReducer
+    })) 
 
-    const handleOpenModal = () => {
-        openModal(modal === "none" ? "block" : "none");        
-    };
+    // const { products = initialState } = useSelector(store => ({
+    //     data: store.draggableIngridientReducer
+    // })) 
+      
+    const board = 'ingridients'
+    const el = () => el*2
+
+    const [{ isHover } , dropRef] = useDrop({
+        accept: "ingridients",
+        collect: monitor => ({
+            isHover: monitor.isOver()       
+        }), 
+        drop(item) {
+            if(item.typeIngridient !== 'bun'){
+                dispatch({
+                type: ADD_QTY,
+                ...item,
+                board
+                });
+                dispatch({
+                    type: ADD_TYPE,
+                    ...item,
+                    board
+                });
+                console.log(item.typeIngridient) 
+            }else{                
+                if(item.id !== data.ingridients[0].id){
+                    console.log('это другая булка!');
+                    dispatch({
+                        type: REMOVE_BUN,
+                        ...item,
+                        board
+                    })
+                    
+                }                
+            }
+        }       
+    });
+
+    
+    const borderColor = isHover ? "lightgreen" : "transparent";
+    const [total, setTotal] = useState(0);
+
+    useEffect(()=>{
+        let arrEl = []
+        let summ = 0
+        arrEl = data.ingridients.map(item => {
+            return item.price
+        })
+        console.log(arrEl)
+        summ = arrEl.reduce((sum, current) => {
+            return sum + current
+        })       
+        setTotal(summ)
+        console.log(`Это summ - ${summ}`)
+    }, [data])
+    useEffect(()=>{       
+        document.addEventListener("keydown", keyEsc);
+        return () => {
+            document.removeEventListener("keydown", keyEsc);
+        }
+    }, [])
+
+    const keyEsc = (e) => {        
+        if(e.key === "Escape") {
+            dispatch(closeOrderModal())              
+        }       
+    }
 
     return(
         <>
-        <Modal            
-            handleCloseModal={handleCloseModal}   
-            handleOpenModal={handleOpenModal}  
-            openModal={openModal}       
-            modal={modal} 
-            state={props.data} 
-            modalType = {'null'}
-            ><OrderDetails /></Modal>     
-        <div className="mt-25 ml-10" >
-            <ProductSmall data={props.data}/>
+        <Modal />     
+        <div ref={dropRef} className={" mt-25 ml-10"} onKeyDown={keyEsc}>
+            <ProductSmall data = {data.ingridients}/>
             <div className={ styles.price + " mt-10"}>
-                <Price count={620} elClass={'text text_type_digits-medium'}/>
+                <Price count={total} elClass={'text text_type_digits-medium'}/>
                 <div className="ml-10">
-                    <Button type="primary" size="medium" onClick={handleClickButton}>
+                    <Button type="primary" size="medium" onClick={onSubmit}>
                         Оформить заказ
                     </Button>
                 </div>
@@ -52,8 +112,7 @@ const BurgerConstructor = (props) => {
 }
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(menuItemPropTypes)
-};
-  
+    data: PropTypes.array.isRequired
+}; 
 
 export default BurgerConstructor;

@@ -2,17 +2,52 @@ import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../Price/Price';
 import PropTypes from 'prop-types';
 import styles from './Product.module.css'
+import { useDrag } from "react-dnd";
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-const Product = (props) => {
-   
-    return(
-        <div onClick={props.onClick} className={styles.box + " ml-4 mr-2 mb-6 mt-10"}>
-            { props.counter > 0
-            ? <Counter count={props.counter} size="default" className={styles.count}/>
-            : null }
+const initialState = { qty: 0 }
+
+const Product = (props) => {       
+    const [{ isDragging }, dragRef] = useDrag({
+        type: "ingridients",    
+        item: {
+            id: props.id,
+            name: props.name,
+            thumbnail: props.image_mobile,
+            typeIngridient: props.type,
+            price: props.price,
+            qty: props.qty
+        },  
+        collect: monitor => ({
+            isDragging: monitor.isDragging()
+        })
+    });
+
+    const { data = initialState } = useSelector(store => ({
+        ingridients: store.draggableIngridientReducer.ingridients
+    }))
+
+    // const onSubmit = (data) => {       
+    //     dispatch(addIngredient(data))        
+    // }
+    // const ingridients = data.ingridients
+    // const elemCount = 0
+    // useEffect((ingridients) => {        
+    //     const counter = () => {
+    //         ingridients.find(ingridient => ingridient.id === props.id ? elemCount = ingridient.qty : elemCount = 0)
+    //     }
+    //     counter()
+    // }, [data])
+
+    return(    
+        <div ref={dragRef} onClick={props.onClick} className={styles.box + " ml-4 mr-2 mb-6 mt-10"} >
+            { props.qty > 0
+            ? <Counter count={props.qty} size="default" className={styles.count}/>
+            : null }            
             <div className="pl-4 pr-4 pb-1">
-                <img src={props.image} alt="сочная новинка"></img>
-            </div>
+                <img src={props.image} alt="сочная новинка"></img>               
+            </div> 
             <div className={styles.center + " pb-1"}>
                 <Price count={props.price} elClass={'text text_type_main-default'}/>
             </div>
@@ -24,11 +59,9 @@ const Product = (props) => {
 }
 
 Product.propTypes = {
-    onClick: PropTypes.func.isRequired,
     image: PropTypes.string.isRequired,       
     price: PropTypes.number.isRequired,
     counter: PropTypes.number,
-    name: PropTypes.string.isRequired
 }; 
 
 export default Product;

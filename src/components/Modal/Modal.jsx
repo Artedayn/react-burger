@@ -1,45 +1,54 @@
 import { createPortal } from 'react-dom';
-import { useEffect } from "react";
 import close from '../../images/close.png';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import OrderDetails from '../OrderDetails/OrderDetails';
 import styles from './Modal.module.css';
 import PropTypes from 'prop-types';
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
-
-const Modal = (props) => {   
+import { deleteIngredient } from '../../services/actions/modal';
+import { useSelector, useDispatch } from 'react-redux';
+const Modal = () => {   
+    const dispatch = useDispatch(); 
     const modalRoot = document.getElementById("react-modals");
 
-    const keyEsc = (e) => {           
-        if(e.key === "Escape") {
-            props.openModal(props.modal === "block" ? "none" : 'none');            
-        }        
+    const { state, isOpen } = useSelector(store => ({
+        state: store.modalReducer.modal,
+        isOpen: store.modalReducer.isOpen
+    })) 
+    const modalType = state !== '' ? 'ingredients' : 'null'
+    const modalOpen = isOpen ? 'block' : 'none'
+    
+    const onDelete = (id) => {        
+        dispatch(deleteIngredient(id))
     }
-
-    useEffect(()=>{       
-        document.addEventListener("keydown", keyEsc);
-        return () => {
-            document.removeEventListener("keydown", keyEsc);
-        }
-    }, [])
     
     return createPortal(  
-        <>        
-        { (props.modal === 'block')
+        <>
+        { (modalOpen === 'block')
         ?
-           <div className={"pb-30 " + styles.block} onKeyDown={keyEsc}>   
+           <div className={"pb-30 " + styles.block} >   
                 <div>
-                    <img src={close} onClick={props.handleCloseModal} className={styles.close} alt="закрыть"></img>
+                    <img src={close} onClick={onDelete} className={styles.close} alt="закрыть"></img>
                 </div>
+                { modalType === 'ingredients'
+                ?
+                <>
                 <div className={"m-10 pt-3 " + styles.center}>
                     <p className="text text_type_main-large">
-                        {props.detail}
+                        Детали ингридиента
                     </p>                
-                </div> 
-                {props.children}   
+                </div>
+                <IngredientDetails state={state}/>
+                </>
+                :
+                <OrderDetails />
+                }
             </div>
+            
         :        
             null
         }
-        <ModalOverlay modal={props.modal} state={props.state} handleCloseModal={props.handleCloseModal}/> 
+        <ModalOverlay modal={modalOpen} handleCloseModal={onDelete}/> 
        </> 
         ,
         modalRoot
@@ -47,12 +56,7 @@ const Modal = (props) => {
 }
 
 Modal.propTypes = {
-    modal: PropTypes.string.isRequired,
-    handleCloseModal: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired,
-    detail: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    state: PropTypes.any
+    modal: PropTypes.string   
 };
 
 export default Modal

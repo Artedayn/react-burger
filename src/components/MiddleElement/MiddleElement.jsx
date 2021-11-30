@@ -3,8 +3,16 @@ import { DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../Price/Price';
 import PropTypes from 'prop-types';
 import styles from './MiddleElement.module.css'
+import { useDispatch } from 'react-redux';
+import { deleteIngredientBurger } from '../../services/actions/burgerConstriction'
 
 const MiddleElement = (props) => {
+    const dispatch = useDispatch(); 
+
+    const handleClose = (id) =>{
+        dispatch(deleteIngredientBurger(id)) 
+    }
+    
     return (        
         <div className={styles.block} >
             <div className={ styles.center + " pr-2"}>                
@@ -23,7 +31,7 @@ const MiddleElement = (props) => {
                     <Price count={props.price} elClass={'text text_type_main-default'}/>
                 </div>
                 <div className={styles.center}>
-                    <DeleteIcon type="primary" />
+                    <DeleteIcon type="primary" onClick={() => handleClose(props.id)} />
                 </div>
             </div> 
         </div>
@@ -31,9 +39,9 @@ const MiddleElement = (props) => {
 }
 
 MiddleElement.propTypes = {
-    text: PropTypes.string.isRequired,
-    thumbnail: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
+    text: PropTypes.string,
+    thumbnail: PropTypes.string,
+    price: PropTypes.number,
 }; 
 
 export default MiddleElement

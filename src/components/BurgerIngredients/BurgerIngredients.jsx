@@ -1,60 +1,77 @@
 import TabElements from "../TabElements/TabElements";
 import Product from "../Product/Product";
 import styles from './BurgerIngredients.module.css';
-import { useMemo } from "react";
-import React from "react";
+import { useMemo, useEffect } from "react";
 import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import PropTypes from 'prop-types';
-import { menuItemPropTypes } from '../../utils/constants';
+import { useSelector, useDispatch } from 'react-redux';
+import { addIngredient, deleteIngredient } from '../../services/actions/modal';
+import { elScroll } from "../../services/actions/burgerIngridients";
 
-const BurgerIngredients = (props) => {   
-    const data = props.data;
+const initialState = []
+
+const BurgerIngredients = () => {  
+    const dispatch = useDispatch(); 
+
+    const onSubmit = (data) => {       
+        dispatch(addIngredient(data))        
+    }
+
+    const { data = initialState, qty = initialState } = useSelector(store => ({
+        data: store.feedReducer.feed.data
+    }))  
+        
+    const calculate = (el) => {         
+        if (el.length % 2 > 0){
+            return ((el.length / 2) + 0,5) * 244 + 94
+        }
+        else {
+            return (el.length / 2) * 244 + 94
+        }
+    }
     const buns = useMemo(() => data.filter((item) => item.type === 'bun'), [data]);
     const mains = useMemo(() => data.filter((item) => item.type === 'main'), [data]);
-    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);    
-
-    const [modal, openModal] = React.useState("none");
-    const [state, setDataForModal] = React.useState("");    
-
-    const handleOpenModal = () => {
-        openModal(modal === "none" ? "block" : "none");        
-    };   
+    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
+    const counter = useMemo(() => data.filter((item) => item.id === qty.id ? item.qty = qty.qty : item.qty), [qty])
     
-    const handleClickIngredients = (data) => {       
-        setDataForModal(data);
-        handleOpenModal();        
+    const paddingBuns = calculate(buns)
+    const paddingSauces = calculate(sauces) + paddingBuns
+
+    const handleScroll = event => { 
+        const scroll = event.target.scrollTop;
+        dispatch(elScroll(scroll, paddingBuns, paddingSauces))        
     }
     
-    const handleCloseModal = (e) => {
-        openModal(modal === "none" ? "block" : "none");       
-    };
-       
+    const keyEsc = (e) => {           
+        if(e.key === "Escape") {
+            dispatch(deleteIngredient())              
+        }        
+    }
+
+    useEffect(()=>{       
+        document.addEventListener("keydown", keyEsc);
+        return () => {
+            document.removeEventListener("keydown", keyEsc);
+        }        
+    }, [])
+
     return(
         <div>                    
-            <Modal            
-            handleCloseModal={handleCloseModal}            
-            modal={modal}
-            state={state} 
-            data={data}
-            openModal={openModal}
-            detail={'Детали заказа'}
-           ><IngredientDetails state={state}/></Modal>
-            <div className="mb-5 mt-10" >
+            <Modal/> 
+            <div className="mb-5 mt-10" onKeyDown={keyEsc}>
                 <p className="text text_type_main-large">
                     Соберите бургер
                 </p>
             </div>
             <TabElements />
-            <div className={ styles.scroll + ' custom-scroll' } > 
-            <div className="mb-6 mt-10">
+            <div onScroll={handleScroll} className={ styles.scroll + ' custom-scroll' } > 
+                <div className="mb-6 mt-10">
                     <p className="text text_type_main-medium">
                         Булки
                     </p>
                 </div>                 
                 <div className={ styles.box } >
-                { buns.map((data, index)=>(
-                    <Product onClick={() => handleClickIngredients(data)} name={data.name} counter={data.count} price={data.price} image={data.image} key={data._id}/> 
+                { buns.map((data, index)=>(                    
+                    <Product onClick={() => onSubmit(data)} name={data.name} id={data._id} counter={data.count} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={data.__v}/>                     
                 ))}
 
                 </div> 
@@ -65,7 +82,7 @@ const BurgerIngredients = (props) => {
                 </div>    
                 <div className={ styles.box }>
                 { sauces.map((data, index)=>(                                  
-                    <Product name={data.name} counter={data.count} onClick={() => handleClickIngredients(data)} price={data.price} image={data.image} key={data._id}/>  
+                    <Product name={data.name} id={data._id} counter={data.count} onClick={() => onSubmit(data)} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={data.__v}/>  
                 ))}
                 </div>    
                                 
@@ -76,7 +93,7 @@ const BurgerIngredients = (props) => {
                 </div>
                 <div className={ styles.box }>
                 { mains.map((data, index)=>(                            
-                    <Product name={data.name} counter={data.count} onClick={() => handleClickIngredients(data)} price={data.price} image={data.image} key={data._id}/>    
+                    <Product name={data.name} id={data._id} counter={data.count} onClick={() => onSubmit(data)} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={data.__v}/>    
                 ))}
                 </div>            
             </div>
@@ -84,8 +101,13 @@ const BurgerIngredients = (props) => {
     )
 }
 
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(menuItemPropTypes),
-};
-
 export default BurgerIngredients;
+
+// const handleClickIngredients = (data) => {
+//         setShowModal(true);
+//         setDataForModal(data);
+//     }
+
+//     <Modal header={"Детали ингредиента"} onClose={handleCloseModal}><IngredientDetails data={dataForModal}/></Modal>
+
+//     return <Ingredient key={item._id} data={item} onClick={() => handleClickIngredients(item)} onClose={handleCloseModal}/>
