@@ -1,12 +1,13 @@
 
 import {
-  GET_FEED,
-  GET_FEED_FAILED,
-  GET_FEED_SUCCESS,
+  GET_INGRIDIENTS_REQUEST,
+  GET_INGRIDIENTS_FAILED,
+  GET_INGRIDIENTS_SUCCESS,
   BUN_SCROLL,
   MAIN_SCROLL,
   SAUCE_SCROLL,
-  ADD_QTY
+  ADD_QTY,
+  DEL_QTY
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -18,7 +19,7 @@ const initialState = {
 
 export const feedReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_FEED: {
+    case GET_INGRIDIENTS_REQUEST: {
       return {
         ...state,
         // Запрос начал выполняться
@@ -28,7 +29,7 @@ export const feedReducer = (state = initialState, action) => {
         feedFailed: false,
       };
     }
-    case GET_FEED_SUCCESS: {
+    case GET_INGRIDIENTS_SUCCESS: {
       return { 
         ...state, 
         // Запрос выполнился успешно, помещаем полученные данные в хранилище
@@ -37,7 +38,7 @@ export const feedReducer = (state = initialState, action) => {
         feedRequest: false 
       };
     }
-    case GET_FEED_FAILED: {
+    case GET_INGRIDIENTS_FAILED: {
       return { 
         ...state, 
         // Запрос выполнился с ошибкой, 
@@ -72,11 +73,21 @@ export const feedReducer = (state = initialState, action) => {
           ...state.feed,
           data: 
             // ...state.feed.data,
-            state.feed.data.map((el) => action.id === el._id ? { ...el, __v: el.__v + 1 } : {...el})            
-          
+            state.feed.data.map((el) => action.id === el._id ? { ...el, __v: el.__v + 1 } : {...el})  
         }      
-      }
-  }
+      }      
+    }
+    case DEL_QTY: {
+      return {
+        ...state,
+        feed: {
+          ...state.feed,
+          data: 
+            // ...state.feed.data,
+            state.feed.data.map((el) => action.id === el._id ? { ...el, __v: el.__v - 1  } : {...el}) 
+        }      
+      }      
+    }
   // [...state.ingridients].map(item =>
   //   item.id === action.id ? { ...item, qty: ++item.qty } : {item}
     default: {

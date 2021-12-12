@@ -8,34 +8,34 @@ const AppHeader = () => {
     return(
         <header className={styles.header + " p-4"}>
             <div className={styles.menu}>
-                <div className={styles.item + " pl-5 pr-5 pb-5 pt-5"}>
+                <a href="#" className={styles.item + " pl-5 pr-5 pb-5 pt-5"}>
                     <div className="pr-2">
                         <BurgerIcon type="primary" />
                     </div>                    
                     <p className="text text_type_main-default">
                         Конструктор
                     </p>
-                </div>
-                <div className={styles.item + " pl-5 pr-5 pb-5 pt-5"}>
+                </a>
+                <a href="#" className={styles.item + " pl-5 pr-5 pb-5 pt-5"}>
                     <div className="pr-2">
                         <ListIcon type="primary" />
                     </div>                      
                     <p className="text text_type_main-default">
                         Лента заказов
                     </p>
-                </div>
+                </a>
             </div>            
             <div className={styles.logo + " pl-5 pr-5 pb-5 pt-5"}>
                 <Logo />
             </div>        
-            <div className={styles.profile + " pl-5 pr-5 pb-5 pt-5"}>
+            <a href="#" className={styles.profile + " pl-5 pr-5 pb-5 pt-5"}>
                 <div className="pr-2">
                     <ProfileIcon type="primary" />
                 </div>                 
                 <p className="text text_type_main-default">
                     Личный кабинет
                 </p>
-            </div>        
+            </a>        
         </header>
         
     )

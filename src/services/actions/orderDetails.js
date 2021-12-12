@@ -1,21 +1,62 @@
 import {
-    ADD_ORDER_MODAL,
-    CLOSE_ORDER_MODAL   
+    POST_ORDER_REQUEST,
+    POST_ORDER_FAILED,
+    POST_ORDER_SUCCESS,
+    CLEAR_ORDER   
 } from './actionTypes';
 
-export function openOrderModal() {
-    return dispatch => {
-        dispatch({
-            type: ADD_ORDER_MODAL,
-            number: Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
-        })
-    }   
+export function getOrder(props) {
+    return async dispatch => {
+        const ingredients = {
+            "ingredients": props
+        }        
+
+        try {    
+            dispatch({
+                type: POST_ORDER_REQUEST
+            })
+            const el = (ingredients) => {
+                console.log(JSON.stringify(ingredients))
+            }
+            el(ingredients)
+            const res = await fetch('https://norma.nomoreparties.space/api/orders',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(ingredients)
+                }
+            )
+            if (!res.ok) {       
+                dispatch({
+                    type: POST_ORDER_FAILED
+                })
+            }
+            else{
+                const data = await res.json();
+                const el = (data) => {
+                    console.log(data)
+                }
+                el(data)
+                dispatch({
+                    type: POST_ORDER_SUCCESS,
+                    order: data
+                })
+            }
+        }
+        catch (error) {
+            dispatch({
+                type: POST_ORDER_FAILED
+            })      
+        }        
+    }
 }
 
-export function closeOrderModal() {
+export function clearOrder() {
     return dispatch => {
         dispatch({
-            type: CLOSE_ORDER_MODAL
+            type: CLEAR_ORDER
         })
     }   
 }

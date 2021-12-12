@@ -4,13 +4,15 @@ import Price from '../Price/Price';
 import PropTypes from 'prop-types';
 import styles from './MiddleElement.module.css'
 import { useDispatch } from 'react-redux';
-import { deleteIngredientBurger } from '../../services/actions/burgerConstriction'
-
+import { deleteIngredientBurger } from '../../services/actions/burgerConstruction'
+import { delQty } from '../../services/actions/burgerIngridients'
+ 
 const MiddleElement = (props) => {
     const dispatch = useDispatch(); 
 
     const handleClose = (id) =>{
         dispatch(deleteIngredientBurger(id)) 
+        dispatch(delQty(id))
     }
     
     return (        
@@ -31,7 +33,7 @@ const MiddleElement = (props) => {
                     <Price count={props.price} elClass={'text text_type_main-default'}/>
                 </div>
                 <div className={styles.center}>
-                    <DeleteIcon type="primary" onClick={() => handleClose(props.id)} />
+                    <DeleteIcon type="primary" onClick={() => handleClose(props.index)} />
                 </div>
             </div> 
         </div>

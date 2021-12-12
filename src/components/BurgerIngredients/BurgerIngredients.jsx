@@ -1,25 +1,44 @@
 import TabElements from "../TabElements/TabElements";
+import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import Product from "../Product/Product";
 import styles from './BurgerIngredients.module.css';
-import { useMemo, useEffect } from "react";
+import { useMemo, useState } from "react";
 import Modal from "../Modal/Modal";
 import { useSelector, useDispatch } from 'react-redux';
-import { addIngredient, deleteIngredient } from '../../services/actions/modal';
 import { elScroll } from "../../services/actions/burgerIngridients";
 
 const initialState = []
 
 const BurgerIngredients = () => {  
     const dispatch = useDispatch(); 
+    const [ingridient, setIngridient] = useState({});
+    const [isIngridientsViews, setIsIngridientsViews] = useState(false);
 
-    const onSubmit = (data) => {       
-        dispatch(addIngredient(data))        
+    const onSubmit = (data) => {  
+        setIsIngridientsViews(isIngridientsViews === false ? true : false)   
+        setIngridient(
+            { 
+                image_large: data.image_large,
+                name: data.name,
+                calories: data.calories,
+                proteins: data.proteins,
+                fat: data.fat,
+                carbohydrates: data.carbohydrates
+            }
+        )          
+        console.log(data)
+    }
+
+    const onClose = () => {
+        setIsIngridientsViews(isIngridientsViews === false ? true : false) 
+        setIngridient({})
     }
 
     const { data = initialState, qty = initialState } = useSelector(store => ({
         data: store.feedReducer.feed.data
-    }))  
-        
+    }))     
+    
+
     const calculate = (el) => {         
         if (el.length % 2 > 0){
             return ((el.length / 2) + 0,5) * 244 + 94
@@ -28,6 +47,13 @@ const BurgerIngredients = () => {
             return (el.length / 2) * 244 + 94
         }
     }
+
+    // const setTab = (tab) => {
+    //     setCurrent(tab)
+    //     const element = document.getElementById(tab)
+    //     if (element) element.scrollIntoView({ behavior: 'smooth'})
+    // }
+
     const buns = useMemo(() => data.filter((item) => item.type === 'bun'), [data]);
     const mains = useMemo(() => data.filter((item) => item.type === 'main'), [data]);
     const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
@@ -39,25 +65,11 @@ const BurgerIngredients = () => {
     const handleScroll = event => { 
         const scroll = event.target.scrollTop;
         dispatch(elScroll(scroll, paddingBuns, paddingSauces))        
-    }
-    
-    const keyEsc = (e) => {           
-        if(e.key === "Escape") {
-            dispatch(deleteIngredient())              
-        }        
-    }
-
-    useEffect(()=>{       
-        document.addEventListener("keydown", keyEsc);
-        return () => {
-            document.removeEventListener("keydown", keyEsc);
-        }        
-    }, [])
+    }    
 
     return(
-        <div>                    
-            <Modal/> 
-            <div className="mb-5 mt-10" onKeyDown={keyEsc}>
+        <div>    
+            <div className="mb-5 mt-10" >
                 <p className="text text_type_main-large">
                     Соберите бургер
                 </p>
@@ -97,6 +109,13 @@ const BurgerIngredients = () => {
                 ))}
                 </div>            
             </div>
+            {
+                isIngridientsViews && (
+                    <Modal headerText={true} onClose={onClose}>
+                        <IngredientDetails state={ingridient}/>
+                    </Modal>
+                )
+            }
         </div>
     )
 }

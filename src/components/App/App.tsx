@@ -7,22 +7,19 @@ import { RootStateOrAny, useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 // Наш thunk для запроса данных с сервера
-import { getFeed } from '../../services/actions/burgerIngridients';
+import { getIngridients } from '../../services/actions/burgerIngridients';
 
 
 function App() {  
-  const { feed, feedRequest, feedFailed } = useSelector((state: RootStateOrAny) => ({
-    feed: state.feedReducer.feed.data,
-    feedRequest: state.feedReducer.feedRequest,
-    feedFailed: state.feedReducer.feedFailed
-  }));
-
-  // Получаем метод dispatch
+  const feed = useSelector((state: RootStateOrAny) => state.feedReducer.feed.data)
+  const feedRequest = useSelector((state: RootStateOrAny) => state.feedReducer.feedRequest)
+  const feedFailed = useSelector((state: RootStateOrAny) => state.feedReducer.feedFailed)
+  
   const dispatch = useDispatch();
     
   useEffect(() => {
       // Отправляем экшен-функцию
-    dispatch(getFeed())
+    dispatch(getIngridients())
   }, [])
 
   // const productData = useSelector(store => ({

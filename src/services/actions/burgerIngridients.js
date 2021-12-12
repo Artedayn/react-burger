@@ -1,42 +1,38 @@
 import {
-  GET_FEED,
-  GET_FEED_FAILED,
-  GET_FEED_SUCCESS,
+  GET_INGRIDIENTS_REQUEST,
+  GET_INGRIDIENTS_FAILED,
+  GET_INGRIDIENTS_SUCCESS,
   BUN_SCROLL,
   MAIN_SCROLL,
   SAUCE_SCROLL,
-  ADD_QTY
+  ADD_QTY,
+  DEL_QTY
 } from './actionTypes';
 
-// Наш первый thunk
-export function getFeed() {
-  // Воспользуемся первым аргументом из усилителя redux-thunk - dispatch
+export function getIngridients() {
   return async dispatch => {
-    try {
-      //setState({...state, loading: true});
-      const res = await fetch('https://norma.nomoreparties.space/api/ingredients');
+    try {    
       dispatch({
-        type: GET_FEED
+        type: GET_INGRIDIENTS_REQUEST
       })
-      if (!res.ok) {
-        //throw new Error('Ответ сети был не ok.');
+      const res = await fetch('https://norma.nomoreparties.space/api/ingredients')
+      if (!res.ok) {       
         dispatch({
-          type: GET_FEED_FAILED
+          type: GET_INGRIDIENTS_FAILED
         })
       }
-      const data = await res.json();
-      dispatch({
-        type: GET_FEED_SUCCESS,
-        feed: data
-      })
-
-      //setState({ productData: data.data, loading: false });
+      else{
+        const data = await res.json();
+        dispatch({
+          type: GET_INGRIDIENTS_SUCCESS,
+          feed: data
+        })
+      }
     }
     catch (error) {
       dispatch({
-          type: GET_FEED_FAILED
-      })
-      //console.log('Возникла проблема с вашим fetch запросом: ', error)
+          type: GET_INGRIDIENTS_FAILED
+      })      
     }        
   }
 } 
@@ -65,6 +61,15 @@ export function addQty(item){
   return dispatch => {
     dispatch({
       type: ADD_QTY,
+      item: item
+    })
+  }
+}
+
+export function delQty(item){ 
+  return dispatch => {
+    dispatch({
+      type: DEL_QTY,
       item: item
     })
   }

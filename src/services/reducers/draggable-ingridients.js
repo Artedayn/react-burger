@@ -65,11 +65,14 @@ export const draggableIngridientReducer = (state = initialState, action) => {
         case DELETE_INGREDIENT: {
             return {
               ...state,              
-                ingridients: [...state.ingridients].filter(
-                    item => item.id === action.item ? false : item
+                ingridients: [...state.ingridients].filter((item, 
+                    index) => index === action.item ? false : item
                 )              
             }
         }   
+        // case MOVE_BUN: {
+
+        // }
         default:
             return state;
     }

@@ -23,10 +23,10 @@ const ProductSmall = (props) => {
         ))}
         <div className={styles.scroll + ' custom-scroll'}>
         { mains.map((state, index)=>(         
-          <ConstructorElement id={state.id} text={state.name} price={state.price} thumbnail={state.thumbnail} key={index}/>         
+          <ConstructorElement id={state.id} text={state.name} price={state.price} thumbnail={state.thumbnail} index={index + 1} key={index}/>         
         ))}
         { sauces.map((state, index)=>(          
-          <ConstructorElement id={state.id} text={state.name} price={state.price} thumbnail={state.thumbnail} key={index}/>          
+          <ConstructorElement id={state.id} text={state.name} price={state.price} thumbnail={state.thumbnail} index={index + 1} key={index}/>          
         ))}
         </div>
        { buns.map((state, index)=>(  
