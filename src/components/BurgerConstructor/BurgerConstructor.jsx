@@ -6,66 +6,70 @@ import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css';
 import { getOrder, clearOrder } from "../../services/actions/orderDetails";
 import { useDrop } from 'react-dnd';
-import { ADD_TYPE, ADD_QTY, REMOVE_BUN } from "../../services/actions/actionTypes";
+import { REMOVE_BUN, ADD_INGREDIENT, MOVE_INGREDIENT } from "../../services/actions/actionTypes";
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from "../Modal/Modal";
 import { useMemo } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {    
     const dispatch = useDispatch(); 
 
+    // Обращаемся к стору
     const { data } = useSelector(store => ({
-        data: store.draggableIngridientReducer
+        data: store.constructionReducer
     })) 
 
+    // Флаг на отправку данных заказа
     const { isOrderSuccess } = useSelector(store => ({
         isOrderSuccess: store.orderDetailsReducer.success
     })) 
 
-    const ingridients = useMemo(() => data.ingridients.map((item) => item.id), [data])
+    // Массив ID ингридиентов
+    const ingridientsId = useMemo(() => data.ingridients.map((item) => item.id), [data])
 
+    // Отправка массива ID, получение номера заказа
     const onSubmit = () => {       
-        dispatch(getOrder(ingridients))        
+        dispatch(getOrder(ingridientsId))        
     }  
 
+    // Ф-ция закрытия и очистки данных заказа
     const onClose = () => {       
         dispatch(clearOrder())  
     } 
 
     const board = 'ingridients'
-    const el = () => el*2
 
-    const [{ isHover } , dropRef] = useDrop({
+    // DND - определяем тип перетаскиваемого элемента, отправляем в burger Ingridients
+    const [{ handlerId } , dropRef] = useDrop({
         accept: "ingridients",
         collect: monitor => ({
-            isHover: monitor.isOver()       
+            handlerId: monitor.getHandlerId(), 
         }), 
-        drop(item) {
-            if(item.typeIngridient !== 'bun'){
-                dispatch({
-                    type: ADD_QTY,
-                    
-                });
-                dispatch({
-                    type: ADD_TYPE,
-                    ...item,
-                    board
-                });
-                console.log(item.typeIngridient) 
-            }else{                
-                if(item.id !== data.ingridients[0].id){
-                    console.log('это другая булка!');
+        drop(item) {          
+            
+            if(item.act !== "move"){
+                if(item.type !== 'bun'){
                     dispatch({
-                        type: REMOVE_BUN,
-                        ...item,
+                        type: ADD_INGREDIENT,
+                        payload: { ...item, constructorId: uuidv4()},
                         board
-                    })
-                    
-                }                
-            }
+                    });                
+                    console.log(item.type) 
+                }else{                
+                    if(item.id !== data.ingridients[0].id){                   
+                        dispatch({
+                            type: REMOVE_BUN,
+                            ...item,
+                            board
+                        })
+                    }                
+                }
+            }            
         }       
     });
-  
+    
+    // Счётчик стоимости товаров
     const total = useMemo(()=>{
         let arrEl = []
         let summ = 0
@@ -82,7 +86,7 @@ const BurgerConstructor = () => {
         <>
              
         <div ref={dropRef} className={" mt-25 ml-10"}>
-            <ProductSmall data = {data.ingridients}/>
+            <ProductSmall data = {data.ingridients} />
             <div className={ styles.price + " mt-10"}>
                 <Price count={total} elClass={'text text_type_digits-medium'}/>
                 <div className="ml-10">

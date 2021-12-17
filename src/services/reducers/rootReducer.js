@@ -1,8 +1,7 @@
 
 import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import {feedReducer} from './burgerIngridients';
-import {draggableIngridientReducer} from './draggable-ingridients'
-import {dropTargetReducer} from './drop-targer'
+import {constructionReducer} from './constructionReducer'
 import {orderDetailsReducer} from './orderDetailsReducer'
 import thunk from 'redux-thunk';
 
@@ -11,8 +10,7 @@ const composeEnhancers = (window).window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
 
 const rootReducer = combineReducers({  
   feedReducer: feedReducer,
-  draggableIngridientReducer: draggableIngridientReducer,
-  dropTargetReducer: dropTargetReducer,
+  constructionReducer: constructionReducer,
   orderDetailsReducer: orderDetailsReducer
 });
 

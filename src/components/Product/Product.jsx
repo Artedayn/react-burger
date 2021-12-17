@@ -3,10 +3,6 @@ import Price from '../Price/Price';
 import PropTypes from 'prop-types';
 import styles from './Product.module.css'
 import { useDrag } from "react-dnd";
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-
-const initialState = { qty: 0 }
 
 const Product = (props) => {       
     const [{ isDragging }, dragRef] = useDrag({
@@ -15,18 +11,16 @@ const Product = (props) => {
             id: props.id,
             name: props.name,
             thumbnail: props.image_mobile,
-            typeIngridient: props.type,
+            type: props.type,
             price: props.price,
-            qty: props.qty
+            qty: props.qty,
+            act: "drop"
         },  
         collect: monitor => ({
             isDragging: monitor.isDragging()
         })
     });
 
-    const { data = initialState } = useSelector(store => ({
-        ingridients: store.draggableIngridientReducer.ingridients
-    }))
 
     // const onSubmit = (data) => {       
     //     dispatch(addIngredient(data))        

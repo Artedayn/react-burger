@@ -1,18 +1,18 @@
 import ConstructorElement from '../ConstructorElement/ConstructorElement';
 import styles from './ProductSmall.module.css';
-import { useMemo } from 'react';
-import { useSelector} from 'react-redux';
-
-const initialState = []
+import { useEffect, useMemo } from 'react';
 
 const ProductSmall = (props) => {  
     const data = props.data 
+    useEffect(() => {
+      console.log(data)
+    }, [data])
     const buns = useMemo(() => data.filter((item) => item.type === 'bun'), [data]);
-    const mains = useMemo(() => data.filter((item) => item.type === 'main'), [data]);
-    const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
+    const mains = useMemo(() => data.filter((item) => item.type !== 'bun'), [data]);
+    // const sauces = useMemo(() => data.filter((item) => item.type === 'sauce'), [data]);
 
     return (
-      <div >
+      <div>
         { buns.map((state, index)=>( 
           <div key={state._id} className={styles.padding__top}>     
             { index === 0
@@ -23,11 +23,9 @@ const ProductSmall = (props) => {
         ))}
         <div className={styles.scroll + ' custom-scroll'}>
         { mains.map((state, index)=>(         
-          <ConstructorElement id={state.id} text={state.name} price={state.price} thumbnail={state.thumbnail} index={index + 1} key={index}/>         
+          <ConstructorElement id={state.id} text={state.name} price={state.price} thumbnail={state.thumbnail} index={index} constructorId={state.constructorId} key={index}/>         
         ))}
-        { sauces.map((state, index)=>(          
-          <ConstructorElement id={state.id} text={state.name} price={state.price} thumbnail={state.thumbnail} index={index + 1} key={index}/>          
-        ))}
+       
         </div>
        { buns.map((state, index)=>(  
         <div key={state._id} className={styles.padding__bottom}>    

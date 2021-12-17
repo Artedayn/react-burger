@@ -12,23 +12,7 @@ const initialState = {
 }
 
 export const orderDetailsReducer = (state = initialState, action) => {
-    switch(action.type){      
-      // case ADD_ORDER_MODAL: {
-      //     return {
-      //       ...state,
-      //       isOpen: true, 
-      //       modal: '',
-      //       number: action.number   
-      //     }
-      //   }   
-      // case CLOSE_ORDER_MODAL: {
-      //     return {
-      //       ...state,
-      //       isOpen: false, 
-      //       modal: '',
-      //       number: ''       
-      //     }
-      //   }   
+    switch(action.type){     
       case POST_ORDER_REQUEST: {
         return {
           ...state,
