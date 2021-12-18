@@ -2,11 +2,10 @@ import ProductSmall from "../ProductSmall/ProductSmall";
 import OrderDetails from '../OrderDetails/OrderDetails';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../Price/Price';
-import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css';
 import { getOrder, clearOrder } from "../../services/actions/orderDetails";
 import { useDrop } from 'react-dnd';
-import { REMOVE_BUN, ADD_INGREDIENT, MOVE_INGREDIENT } from "../../services/actions/actionTypes";
+import { REMOVE_BUN, ADD_INGREDIENT } from "../../services/actions/actionTypes";
 import { useSelector, useDispatch } from 'react-redux';
 import Modal from "../Modal/Modal";
 import { useMemo } from "react";
@@ -41,26 +40,24 @@ const BurgerConstructor = () => {
     const board = 'ingridients'
 
     // DND - определяем тип перетаскиваемого элемента, отправляем в burger Ingridients
-    const [{ handlerId } , dropRef] = useDrop({
+    const [ , dropRef] = useDrop({
         accept: "ingridients",
         collect: monitor => ({
             handlerId: monitor.getHandlerId(), 
         }), 
-        drop(item) {          
-            
-            if(item.act !== "move"){
+        drop(item) {
+            if(item.act === "drop"){
                 if(item.type !== 'bun'){
                     dispatch({
                         type: ADD_INGREDIENT,
                         payload: { ...item, constructorId: uuidv4()},
                         board
-                    });                
-                    console.log(item.type) 
-                }else{                
-                    if(item.id !== data.ingridients[0].id){                   
+                    }); 
+                }else{           
+                    if(item.id !== data.ingridients[0].id){ 
                         dispatch({
                             type: REMOVE_BUN,
-                            ...item,
+                            payload: item,
                             board
                         })
                     }                
@@ -83,8 +80,7 @@ const BurgerConstructor = () => {
     }, [data])
 
     return(
-        <>
-             
+        <> 
         <div ref={dropRef} className={" mt-25 ml-10"}>
             <ProductSmall data = {data.ingridients} />
             <div className={ styles.price + " mt-10"}>
@@ -105,9 +101,5 @@ const BurgerConstructor = () => {
         </>
     )
 }
-
-BurgerConstructor.propTypes = {
-    data: PropTypes.array.isRequired
-}; 
 
 export default BurgerConstructor;

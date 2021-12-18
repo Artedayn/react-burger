@@ -19,20 +19,23 @@ const Modal = ({onClose, children, headerText = ""}) => {
     }
 
     return createPortal(  
-        <>        
-        <div className={"pb-30 " + styles.block} >   
-            <div>
-                <img src={close} onClick={onClose} className={styles.close} alt="закрыть"></img>
-            </div>                
-            { headerText && (
-            <div className={"m-10 pt-3 " + styles.center}>
-                <p className="text text_type_main-large">
-                    Детали ингридиента
-                </p>                
-            </div>
-            )}
-            {children}
-        </div>           
+        <>
+        <div className={styles.container}>
+            <div className={"pb-30 " + styles.block} >   
+                <div>
+                    <img src={close} onClick={onClose} className={styles.close} alt="закрыть"></img>
+                </div>                
+                { headerText && (
+                <div className={"m-10 pt-3 " + styles.center}>
+                    <p className="text text_type_main-large">
+                        {headerText}
+                    </p>                
+                </div>
+                )}
+                {children}
+            </div> 
+        </div>        
+                  
         
         <ModalOverlay handleCloseModal={onClose}/> 
        </> 
@@ -42,7 +45,9 @@ const Modal = ({onClose, children, headerText = ""}) => {
 }
 
 Modal.propTypes = {
-    modal: PropTypes.string   
+    modal: PropTypes.string,
+    headerText:  PropTypes.string,
+    onClose: PropTypes.func.isRequired
 };
 
 export default Modal

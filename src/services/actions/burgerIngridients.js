@@ -5,9 +5,10 @@ import {
   BUN_SCROLL,
   MAIN_SCROLL,
   SAUCE_SCROLL,
-  ADD_QTY,
   DEL_QTY
 } from './actionTypes';
+
+import url from '../../utils/consts'
 
 export function getIngridients() {
   return async dispatch => {
@@ -15,7 +16,7 @@ export function getIngridients() {
       dispatch({
         type: GET_INGRIDIENTS_REQUEST
       })
-      const res = await fetch('https://norma.nomoreparties.space/api/ingredients')
+      const res = await fetch(url + 'ingredients')
       if (!res.ok) {       
         dispatch({
           type: GET_INGRIDIENTS_FAILED
@@ -54,15 +55,6 @@ export function elScroll(scroll, paddingBuns, paddingSauces){
         type: BUN_SCROLL
       })
     }
-  }
-}
-
-export function addQty(item){ 
-  return dispatch => {
-    dispatch({
-      type: ADD_QTY,
-      item: item
-    })
   }
 }
 

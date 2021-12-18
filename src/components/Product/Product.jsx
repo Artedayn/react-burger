@@ -5,7 +5,7 @@ import styles from './Product.module.css'
 import { useDrag } from "react-dnd";
 
 const Product = (props) => {       
-    const [{ isDragging }, dragRef] = useDrag({
+    const [, dragRef] = useDrag({
         type: "ingridients",    
         item: {
             id: props.id,
@@ -19,20 +19,7 @@ const Product = (props) => {
         collect: monitor => ({
             isDragging: monitor.isDragging()
         })
-    });
-
-
-    // const onSubmit = (data) => {       
-    //     dispatch(addIngredient(data))        
-    // }
-    // const ingridients = data.ingridients
-    // const elemCount = 0
-    // useEffect((ingridients) => {        
-    //     const counter = () => {
-    //         ingridients.find(ingridient => ingridient.id === props.id ? elemCount = ingridient.qty : elemCount = 0)
-    //     }
-    //     counter()
-    // }, [data])
+    })
 
     return(    
         <div ref={dragRef} onClick={props.onClick} className={styles.box + " ml-4 mr-2 mb-6 mt-10"} >
@@ -55,6 +42,11 @@ const Product = (props) => {
 Product.propTypes = {
     image: PropTypes.string.isRequired,       
     price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    image_mobile: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    qty: PropTypes.number,
     counter: PropTypes.number,
 }; 
 

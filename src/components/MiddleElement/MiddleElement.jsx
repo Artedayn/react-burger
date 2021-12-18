@@ -18,25 +18,24 @@ const MiddleElement = (props) => {
     }
 
      //DRAG для перетаскивания
-     const [{ isDragging }, dragRef] = useDrag({
+     const [, dragRef] = useDrag({
         type: "ingridients",    
         item: {...props, act: "move"},               
         collect: monitor => ({
             isDragging: monitor.isDragging()            
         })
     });
-    const [{ handlerId } , dropRef] = useDrop({
+    const [, dropRef] = useDrop({
         accept: "ingridients",
         collect: monitor => ({
             handlerId: monitor.getHandlerId(), 
         }), 
-        drop(item) {           
-            console.log(item)
+        drop(item) {                       
             if(item.act === "move"){
                 dispatch({
                     type: MOVE_INGREDIENT,
                     payload: { ...item, from: item.index, to: props.index}
-                })
+                })                 
             }                  
         }       
     });
@@ -69,9 +68,16 @@ const MiddleElement = (props) => {
 }
 
 MiddleElement.propTypes = {
-    text: PropTypes.string,
-    thumbnail: PropTypes.string,
-    price: PropTypes.number,
+    text: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    type: PropTypes.string,
+    position: PropTypes.string,
+    isLocked: PropTypes.bool,
+    id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ])
 }; 
 
 export default MiddleElement

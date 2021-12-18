@@ -23,7 +23,15 @@ const ConstructorElement = (props) => {
 
 ConstructorElement.propTypes = {
     type: PropTypes.string,
-    position: PropTypes.string
+    position: PropTypes.string,
+    isLocked: PropTypes.bool,
+    text: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ])
 }; 
 
 export default ConstructorElement 

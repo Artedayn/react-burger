@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import styles from './TopElement.module.css'
 
 const TopElement = (props) => {
-    return (
-        <div className={styles.box + " ml-8 pl-6 pr-8"}>
+    const elem = props.id !== false 
+    ?   <>
             <div className="pr-5">
                 <img src={props.thumbnail}  alt="верхяя булочка"/>
             </div>
@@ -15,12 +15,20 @@ const TopElement = (props) => {
                 </p>
             </div>
             <div className={styles.center + " pr-5"}>
-                <Price count={props.price} elClass={'text text_type_main-default'}/>
+                <Price count={props.price/2} elClass={'text text_type_main-default'}/>
             </div>
             <div className={styles.center}>
                 <LockIcon type="primary" />
-            </div>
+            </div> 
+        </>
+    : <div className={styles.non_item}>Добавьте пожалуйста булку</div>
+    
+    return (        
+        <div className={styles.box + " ml-8 pl-6 pr-8"}>
+            {elem}              
         </div>
+
+        
     )
 }
 
@@ -28,6 +36,13 @@ TopElement.propTypes = {
     text: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    type: PropTypes.string,
+    position: PropTypes.string,
+    isLocked: PropTypes.bool,   
+    id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ])
 }; 
 
 export default TopElement

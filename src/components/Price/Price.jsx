@@ -13,7 +13,8 @@ const Price = (props) => {
 }
 
 Price.propTypes = {
-    count: PropTypes.number
+    count: PropTypes.number.isRequired,
+    elClass: PropTypes.string.isRequired
 }; 
 
 export default Price;

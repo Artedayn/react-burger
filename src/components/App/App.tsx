@@ -11,7 +11,7 @@ import { getIngridients } from '../../services/actions/burgerIngridients';
 
 
 function App() {  
-  const feed = useSelector((state: RootStateOrAny) => state.feedReducer.feed.data)
+  // const feed = useSelector((state: RootStateOrAny) => state.feedReducer.feed.data)
   const feedRequest = useSelector((state: RootStateOrAny) => state.feedReducer.feedRequest)
   const feedFailed = useSelector((state: RootStateOrAny) => state.feedReducer.feedFailed)
   
@@ -60,13 +60,14 @@ function App() {
         <DndProvider backend={HTML5Backend}>
           <div className={styles.box}>
             <BurgerIngredients/>
-            <BurgerConstructor data={ feed }/>
+            <BurgerConstructor/>
           </div>
         </DndProvider>
       </>
     )
 }
 }
+
 
 // const mapStateToProps = (store) => {
 //   return {

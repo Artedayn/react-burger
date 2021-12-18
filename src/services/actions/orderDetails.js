@@ -4,6 +4,7 @@ import {
     POST_ORDER_SUCCESS,
     CLEAR_ORDER   
 } from './actionTypes';
+import url from '../../utils/consts'
 
 export function getOrder(props) {
     return async dispatch => {
@@ -14,12 +15,9 @@ export function getOrder(props) {
         try {    
             dispatch({
                 type: POST_ORDER_REQUEST
-            })
-            const el = (ingredients) => {
-                console.log(JSON.stringify(ingredients))
-            }
-            el(ingredients)
-            const res = await fetch('https://norma.nomoreparties.space/api/orders',
+            })           
+            
+            const res = await fetch(url + 'orders',
                 {
                     method: 'POST',
                     headers: {
@@ -34,11 +32,7 @@ export function getOrder(props) {
                 })
             }
             else{
-                const data = await res.json();
-                const el = (data) => {
-                    console.log(data)
-                }
-                el(data)
+                const data = await res.json();                
                 dispatch({
                     type: POST_ORDER_SUCCESS,
                     order: data

@@ -1,7 +1,8 @@
 import {
     ADD_INGREDIENT,
     DELETE_INGREDIENT,
-    MOVE_INGREDIENT
+    MOVE_INGREDIENT,
+    REMOVE_BUN
 } from './actionTypes';
 
   
@@ -25,3 +26,11 @@ export function moveIngredients(item) {
         payload: item
     } 
 }
+
+export function removeBun(item) {
+    return{
+        type: REMOVE_BUN,
+        payload: item
+    } 
+}
+

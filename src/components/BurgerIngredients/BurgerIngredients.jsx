@@ -2,7 +2,7 @@ import TabElements from "../TabElements/TabElements";
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 import Product from "../Product/Product";
 import styles from './BurgerIngredients.module.css';
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import Modal from "../Modal/Modal";
 import { useSelector, useDispatch } from 'react-redux';
 import { elScroll } from "../../services/actions/burgerIngridients";
@@ -49,7 +49,7 @@ const BurgerIngredients = () => {
         setIngridient({})
     }
 
-    const { data = initialState, qty = initialState } = useSelector(store => ({
+    const { data = initialState } = useSelector(store => ({
         data: store.feedReducer.feed.data
     }))     
     
@@ -99,7 +99,7 @@ const BurgerIngredients = () => {
                 </div>                 
                 <div className={ styles.box } >
                 { buns.map((data, index)=>(                    
-                    <Product onClick={() => onSubmit(data)} name={data.name} id={data._id} counter={data.count} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={ingredientsCounters[data._id]} />                     
+                    <Product onClick={() => onSubmit(data)} name={data.name} id={data._id} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={ingredientsCounters[data._id]*2} />                     
                 ))}
 
                 </div> 
@@ -110,7 +110,7 @@ const BurgerIngredients = () => {
                 </div>    
                 <div className={ styles.box }>
                 { sauces.map((data, index)=>(                                  
-                    <Product name={data.name} id={data._id} counter={data.count} onClick={() => onSubmit(data)} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={ingredientsCounters[data._id]} />  
+                    <Product name={data.name} id={data._id} onClick={() => onSubmit(data)} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={ingredientsCounters[data._id]} />  
                 ))}
                 </div>    
                                 
@@ -121,13 +121,13 @@ const BurgerIngredients = () => {
                 </div>
                 <div className={ styles.box }>
                 { mains.map((data, index)=>(                            
-                    <Product name={data.name} id={data._id} counter={data.count} onClick={() => onSubmit(data)} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={ingredientsCounters[data._id]} />    
+                    <Product name={data.name} id={data._id} onClick={() => onSubmit(data)} image_mobile={data.image_mobile} price={data.price} type={data.type} image={data.image} key={data._id} qty={ingredientsCounters[data._id]} />    
                 ))}
                 </div>            
             </div>
             {
                 isIngridientsViews && (
-                    <Modal headerText={true} onClose={onClose}>
+                    <Modal headerText={"Детали ингридиента"} onClose={onClose}>
                         <IngredientDetails state={ingridient}/>
                     </Modal>
                 )
@@ -137,12 +137,3 @@ const BurgerIngredients = () => {
 }
 
 export default BurgerIngredients;
-
-// const handleClickIngredients = (data) => {
-//         setShowModal(true);
-//         setDataForModal(data);
-//     }
-
-//     <Modal header={"Детали ингредиента"} onClose={handleCloseModal}><IngredientDetails data={dataForModal}/></Modal>
-
-//     return <Ingredient key={item._id} data={item} onClick={() => handleClickIngredients(item)} onClose={handleCloseModal}/>
