@@ -1,26 +1,30 @@
 import { LockIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../Price/Price';
 import PropTypes from 'prop-types';
-import styles from './BottomElement.module.css'
+import styles from './BottomElement.module.css';
 
 const BottomElement = (props) => {
-    return (
-        <div className={styles.box + " ml-8 pl-6 pr-8"}>
+    const elem = props.id !== false 
+    ?   <>
             <div className="pr-5">
-                <img src={props.thumbnail}  alt="нижняя булочка"/>
+                <img src={props.thumbnail} alt="нижняя булочка"/>
             </div>
-            <div className={styles.item + " pr-5"}>
+            <div className={ styles.name + " pr-5"}>
                 <p className="text text_type_main-default">
                     {props.text}.
                 </p>
             </div>
-            <div className={styles.center + " pr-5"}>
-                <Price count={props.price} elClass={'text text_type_main-default'}/>
+            <div className={ styles.icon + " pr-5"}>
+                <Price count={props.price/2} elClass={'text text_type_main-default'}/>
             </div>
-            <div className={styles.center}>
+            <div className={ styles.icon }>
                 <LockIcon type="primary" />
             </div>
-        </div>
+        </>
+    : <div className={styles.non_item}></div>
+    return ( 
+        <div className={styles.item + " ml-8 pl-6 pr-8"}>{elem}</div>       
+        
     )
 }
 
@@ -28,6 +32,13 @@ BottomElement.propTypes = {
     text: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    type: PropTypes.string,
+    position: PropTypes.string,
+    isLocked: PropTypes.bool, 
+    id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ])
 }; 
 
 export default BottomElement

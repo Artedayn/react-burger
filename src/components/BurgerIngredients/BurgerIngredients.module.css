@@ -1,5 +1,6 @@
 .scroll {
     overflow-y: auto;
+    scroll-behavior: smooth;
     height: 720px;
 }
 

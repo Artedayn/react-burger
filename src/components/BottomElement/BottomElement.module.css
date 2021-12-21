@@ -1,16 +1,25 @@
-.box {
+
+.item {
     display: flex;
     justify-content: space-between;
     background: url(../../images/ingredient_b.png) no-repeat 100%;
 }
 
-.item {
+.name {
     display: flex;
     align-items: center;
     width: 254px;
 }
 
-.center {
+.icon {
     display: flex;
     align-items: center;
+}
+
+.non_item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 76px;
+    width: 536px;
 }

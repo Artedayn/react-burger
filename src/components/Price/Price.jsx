@@ -3,6 +3,7 @@ import styles from './Price.module.css';
 import PropTypes from 'prop-types';
 
 const Price = (props) => {
+    
     return (
         <div className={styles.center}>
             <p className={props.elClass + ' pr-2'}>{props.count}</p>

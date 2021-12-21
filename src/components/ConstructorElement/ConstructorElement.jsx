@@ -3,10 +3,10 @@ import MiddleElement from '../MiddleElement/MiddleElement';
 import TopElement from '../TopElement/TopElement';
 import styles from './ConstructorElement.module.css';
 import PropTypes from 'prop-types';
-import { menuItemPropTypes } from '../../utils/constants';
 
 const ConstructorElement = (props) => {
     return(
+        
         <div className={styles.container}>
         { props.type === 'bun' && props.position === "top"
         ? 
@@ -24,7 +24,14 @@ const ConstructorElement = (props) => {
 ConstructorElement.propTypes = {
     type: PropTypes.string,
     position: PropTypes.string,
-    props: menuItemPropTypes
+    isLocked: PropTypes.bool,
+    text: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    thumbnail: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool
+    ])
 }; 
 
 export default ConstructorElement 

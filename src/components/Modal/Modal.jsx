@@ -1,18 +1,11 @@
 import { createPortal } from 'react-dom';
-import { useEffect } from "react";
 import close from '../../images/close.png';
 import styles from './Modal.module.css';
 import PropTypes from 'prop-types';
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
-
-const Modal = (props) => {   
+import { useEffect } from 'react';
+const Modal = ({onClose, children, headerText = ""}) => {   
     const modalRoot = document.getElementById("react-modals");
-
-    const keyEsc = (e) => {           
-        if(e.key === "Escape") {
-            props.openModal(props.modal === "block" ? "none" : 'none');            
-        }        
-    }
 
     useEffect(()=>{       
         document.addEventListener("keydown", keyEsc);
@@ -20,26 +13,31 @@ const Modal = (props) => {
             document.removeEventListener("keydown", keyEsc);
         }
     }, [])
-    
+
+    const keyEsc = (e) => {        
+        onClose()
+    }
+
     return createPortal(  
-        <>        
-        { (props.modal === 'block')
-        ?
-           <div className={"pb-30 " + styles.block} onKeyDown={keyEsc}>   
+        <>
+        <div className={styles.container}>
+            <div className={"pb-30 " + styles.block} >   
                 <div>
-                    <img src={close} onClick={props.handleCloseModal} className={styles.close} alt="закрыть"></img>
-                </div>
+                    <img src={close} onClick={onClose} className={styles.close} alt="закрыть"></img>
+                </div>                
+                { headerText && (
                 <div className={"m-10 pt-3 " + styles.center}>
                     <p className="text text_type_main-large">
-                        {props.detail}
+                        {headerText}
                     </p>                
-                </div> 
-                {props.children}   
-            </div>
-        :        
-            null
-        }
-        <ModalOverlay modal={props.modal} state={props.state} handleCloseModal={props.handleCloseModal}/> 
+                </div>
+                )}
+                {children}
+            </div> 
+        </div>        
+                  
+        
+        <ModalOverlay handleCloseModal={onClose}/> 
        </> 
         ,
         modalRoot
@@ -47,12 +45,9 @@ const Modal = (props) => {
 }
 
 Modal.propTypes = {
-    modal: PropTypes.string.isRequired,
-    handleCloseModal: PropTypes.func.isRequired,
-    openModal: PropTypes.func.isRequired,
-    detail: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    state: PropTypes.any
+    modal: PropTypes.string,
+    headerText:  PropTypes.string,
+    onClose: PropTypes.func.isRequired
 };
 
 export default Modal

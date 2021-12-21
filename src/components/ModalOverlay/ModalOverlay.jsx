@@ -6,16 +6,14 @@ const ModalOverlay = (props) => {
     
     return (
         <>
-            <div className={styles.block} style={{ display: props.modal }} onClick={props.handleCloseModal}>           
+            <div className={styles.block} onClick={props.handleCloseModal}>           
             </div>
             
-         </>
-       
+         </>       
     )
 }
 
 ModalOverlay.propTypes = {
-    modal: PropTypes.string.isRequired,
     handleCloseModal: PropTypes.func.isRequired
 };
 
